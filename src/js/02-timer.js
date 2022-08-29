@@ -41,12 +41,12 @@ function countTimeStart() {
     timerId = setInterval(() => {
         const currentTime = new Date();
         const diff = deadLineDate - currentTime;
-        const timeComponents = convertMs(diff);
+        const {days, hours, minutes, seconds} = convertMs(diff);
 
-        timeComponents.days < 10 ? SpanDaysEl.textContent = '0' + `${timeComponents.days}` : SpanDaysEl.textContent = timeComponents.days;
-        timeComponents.hours < 10 ? SpanHoursEl.textContent = '0' + `${timeComponents.hours}` : SpanHoursEl.textContent = timeComponents.hours;
-        timeComponents.minutes < 10 ? SpanMinEl.textContent = '0' + `${timeComponents.minutes}` : SpanMinEl.textContent = timeComponents.minutes;
-        timeComponents.seconds < 10 ? SpanSecEl.textContent = '0' + `${timeComponents.seconds}` : SpanSecEl.textContent = timeComponents.seconds;
+      SpanDaysEl.textContent = days;
+      SpanHoursEl.textContent = hours;
+      SpanMinEl.textContent = minutes;
+      SpanSecEl.textContent = seconds;
 
    if (diff < 1000) {
        clearInterval(timerId);
@@ -57,7 +57,9 @@ function countTimeStart() {
  
 }
 
-
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0')
+}
 
 function convertMs(ms) {
   const second = 1000;
@@ -66,16 +68,17 @@ function convertMs(ms) {
   const day = hour * 24;
 
   
-  const days = Math.floor(ms / day);
+  const days = addLeadingZero(Math.floor(ms / day));
  
-  const hours = Math.floor((ms % day) / hour);
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
   
-  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
   
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
+
 
 
 flatpickr(InputEl, options)
